@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+
 
 function IngresoForm() {
   const [correo, setCorreo] = useState('');
@@ -9,12 +9,20 @@ function IngresoForm() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3001/ingreso', {
-        correo: correo,
-        contrasena: contrasena,
+      const response = await fetch('http://localhost:3001/ingreso/verificar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          correo: correo,
+          contrasena: contrasena
+        })
       });
 
-      if (response.data.mensaje === 'Usuario registrado') {
+      const data = await response.json();
+
+      if (data.mensaje === 'Usuario registrado') {
         alert('Usuario registrado');
       } else {
         alert('Usuario no encontrado');

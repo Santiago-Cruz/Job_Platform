@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
-import RegistroForm from './components/RegistroForm';
+import RegistroForm from './components/RegistroForm.';
 import IngresoForm from './components/IngresoForm';
 
 function App() {
@@ -7,9 +7,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/users" element={<RegistroForm />} />
-        <Route path="/ingreso" element={<IngresoForm />} />
+        <Route path="/ingreso/verificar" element={<IngresoForm />} />
         <Route
-          path="/"
+          exact path="/"
           element={
             <div>
               <Link to="/users">
