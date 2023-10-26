@@ -1,121 +1,59 @@
-import axios from 'axios';
-import  { useState } from 'react';
+
+import { useState } from 'react';
+import Axios from 'axios';
 
 
-function RegistroForm() {
-  const [usuario, setUsuario] = useState({
-    nombre: '',
-    correo: '',
-    contrasena: '',
-    confirmacion: '',
-  });
+const RegistroForm = () => {
+  const [nombre, setNombre] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [contrasena, setContrasena] = useState('');
+  const [confirmContrasena, setConfirmContrasena] = useState('');
 
-  console.log(usuario);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUsuario({
-      ...usuario,
-      [name]: value,
+  try {
+    const response = await Axios.post('http://localhost:3001/api/users/users', {
+      nombre,
+      correo,
+      contrasena,
+      confirmContrasena,
     });
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+     // Limpiar los campos después del registro exitoso
+     setNombre('');
+     setCorreo('');
+     setContrasena('');
+     setConfirmContrasena('');
 
-    // Verificar si la contraseña y la confirmación coinciden
-    if (usuario.contrasena !== usuario.confirmacion) {
-      alert('La contraseña y la confirmación de contraseña no coinciden');
-      return;
-    }
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-    try {
-      const response = await axios.post('http://localhost:3001/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(usuario),
-      });
-    
-      
-      const data = await response.json();
-    
-      if (data.mensaje === 'Usuario registrado exitosamente') {
-        alert('Usuario registrado correctamente');
-      } else {
-        alert('Error al registrar usuario');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    
-
-    // Limpia los campos después de enviar el formulario
-    setUsuario({
-      nombre: '',
-      correo: '',
-      contrasena: '',
-      confirmacion: '',
-    });
-  };
 
   return (
-    <div>
-      <h1>Formulario de registro</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Nombre:
-            <input
-              type="text"
-              name="nombre"
-              value={usuario.nombre}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Correo:
-            <input
-              type="email"
-              name="correo"
-              value={usuario.correo}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Contraseña:
-            <input
-              type="password"
-              name="contrasena"
-              value={usuario.contrasena}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Confirmar contraseña:
-            <input
-              type="password"
-              name="confirmacion" 
-              value={usuario.confirmacion}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-        <button type="submit">Registrarse</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Nombre:</label>
+        <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+      </div>
+      <div>
+        <label>Correo:</label>
+        <input type="email" value={correo} onChange={(e) => setCorreo(e.target.value)} />
+      </div>
+      <div>
+        <label>Contraseña:</label>
+        <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} />
+      </div>
+      <div>
+        <label>Confirmar Contraseña:</label>
+        <input type="password" value={confirmContrasena} onChange={(e) => setConfirmContrasena(e.target.value)} />
+      </div>
+      <button type="submit">Registrar</button>
+    </form>
   );
-}
+};
 
 export default RegistroForm;
