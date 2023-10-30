@@ -10,7 +10,7 @@ function Bag() {
 
     return (
         <div>
-            {console.log(bag)}
+            
         </div>
     );
 
