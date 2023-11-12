@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Axios from 'axios';
 
 
-const RegistroForm = () => {
+function RegistroForm() {
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
   const [contrasena, setContrasena] = useState('');
@@ -54,6 +54,6 @@ const handleSubmit = async (e) => {
       <button type="submit">Registrar</button>
     </form>
   );
-};
+}
 
 export default RegistroForm;
